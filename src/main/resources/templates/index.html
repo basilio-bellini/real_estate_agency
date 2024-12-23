@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление агентством недвижимости</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="container mt-3">
+    <div th:if="${actionMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${actionMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+<div th:insert="~{fragments/modals}"></div>
+
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        if ("[[${loginError != null}]]" === "true") {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        }
+
+        if ("[[${registrationError != null}]]" === "true") {
+            const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+            registerModal.show();
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Автоматическое исчезновение уведомлений через 5 секунд
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(() => {
+                if (alert) {
+                    alert.remove(); // Удаляет уведомление из DOM
+                }
+            }, 5000); // Уведомление исчезает через 5 секунд
+        }
+    });
+</script>
+
+<script src="/js/bootstrap.bundle.js"></script>
+</body>
+</html>

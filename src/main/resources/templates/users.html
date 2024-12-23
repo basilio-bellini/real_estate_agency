@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+  <title>Управление пользователями</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="container mt-5">
+  <h1>Управление пользователями</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Имя пользователя</th>
+      <th>Роль</th>
+      <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.role}"></td>
+      <td>
+        <form th:action="@{/users/update-role}" method="post" class="d-inline">
+          <input type="hidden" name="userId" th:value="${user.id}">
+          <label>
+            <select name="role" class="form-select d-inline w-auto">
+              <option value="USER" th:selected="${user.role == 'USER'}">USER</option>
+              <option value="ADMIN" th:selected="${user.role == 'ADMIN'}">ADMIN</option>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-primary btn-sm">Обновить</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+<div th:insert="~{fragments/modals}"></div>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", function () {
+    if ("[[${loginError != null}]]" === "true") {
+      const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+      loginModal.show();
+    }
+
+    if ("[[${registrationError != null}]]" === "true") {
+      const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+      registerModal.show();
+    }
+  });
+</script>
+
+<script src="/js/bootstrap.bundle.js"></script>
+</body>
+</html>

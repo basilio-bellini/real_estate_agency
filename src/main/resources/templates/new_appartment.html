@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<title>Добавить квартиру</title>
+<header th:replace="index :: head"></header>
+<body>
+<blockquote class="blockquote text-center"><h1>Добавить квартиру в базу</h1></blockquote>
+<div class="row">
+  <div class="col-md-8 offset-md-4">
+    <form action="#" th:action="@{/save}" th:object="${appartment}" method="post">
+      <table>
+        <tr>
+          <td>ID:</td>
+          <td><label>
+            <input type="text" th:field="*{ID}" readonly="readonly">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Категория:</td>
+          <td><label>
+            <input type="text" th:field="*{category}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Размер:</td>
+          <td><label>
+            <input type="text" th:field="*{size}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Этаж:</td>
+          <td><label>
+            <input type="text" th:field="*{floor_number}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Адрес:</td>
+          <td><label>
+            <input type="text" th:field="*{address}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Метро:</td>
+          <td><label>
+            <input type="text" th:field="*{metro_station}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Описание:</td>
+          <td><label>
+            <input type="text" th:field="*{description}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>Цена:</td>
+          <td><label>
+            <input type="text" th:field="*{price}">
+          </label></td>
+        </tr>
+        <tr>
+          <td>
+            <button type="submit" class="btn btn-primary" data-tooggle="button" aria-pressed="false">Сохранить
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+</body>
+</html>

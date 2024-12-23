@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Доступные предложения</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="~{fragments/header :: header}"></div>
+
+<div class="container mt-3">
+    <div th:if="${actionMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${actionMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+<blockquote class="blockquote text-center"><h1>Доступные предложения</h1></blockquote>
+<div class="row">
+    <div class="col-md-8 offset-md-4">
+        <h4>Поиск квартиры по заданным критериям:</h4>
+        <form th:action="@{/catalog}">
+            <label for="keyword"></label>
+            <input type="text" name="keyword" id="keyword" size="70" th:value="${keyword}" required/>
+            <input type="submit" class="btn btn-success btn-sm" value="Поиск"/>
+            <input type="button" class="btn btn-warning btn-sm" value="Очистить" id="btnClear"
+                   onclick="clearSearch()"/>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4" th:each="apartment : ${listAppartments}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${apartment.category} + ' - ' + ${apartment.size} + ' м²'"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="'Этаж: ' + ${apartment.floor_number}"></h6>
+                    <p class="card-text">
+                        <strong>Адрес:</strong> <span th:text="${apartment.address}"></span><br>
+                        <strong>Метро:</strong> <span th:text="${apartment.metro_station}"></span><br>
+                        <strong>Описание:</strong> <span th:text="${apartment.description}"></span><br>
+                        <strong>Цена:</strong> <span th:text="${apartment.price} + ' ₽'"></span>
+                    </p>
+                    <div th:if="${userRole == 'ADMIN'}" class="d-flex justify-content-between">
+                        <a th:href="@{'/edit/' + ${apartment.ID}}" class="btn btn-info">Редактировать</a>
+                        <a th:href="@{'/delete/' + ${apartment.ID}}" class="btn btn-danger">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<blockquote class="blockquote text-center" th:if="${userRole == 'ADMIN'}">
+    <a href="/new">
+        <button type="button" class="add-apartment-btn">
+            Добавить квартиру
+        </button>
+    </a>
+</blockquote>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
+
+<div th:insert="~{fragments/modals}"></div>
+
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        if ("[[${loginError != null}]]" === "true") {
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
+        }
+
+        if ("[[${registrationError != null}]]" === "true") {
+            const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+            registerModal.show();
+        }
+    });
+</script>
+
+<script type="text/javascript"> function clearSearch() {
+    window.location = "[[@{/catalog}]]";
+}
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Автоматическое исчезновение уведомлений через 5 секунд
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(() => {
+                if (alert) {
+                    alert.remove(); // Удаляет уведомление из DOM
+                }
+            }, 5000); // Уведомление исчезает через 5 секунд
+        }
+    });
+</script>
+
+<script src="/js/bootstrap.bundle.js"></script>
+</body>
+</html>
